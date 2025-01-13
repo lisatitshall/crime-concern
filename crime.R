@@ -334,3 +334,88 @@ ggplot(ethnicity %>% filter(Varname == "CSEW_worryraceattacks")) +
   theme_bw() 
 
 
+#what were the outliers for the 2010's?
+#anything above 0.7 was an outlier
+decade_2010s <- crime_concern %>% filter(decade == "2010")
+
+decade_2010s$theme <- case_when(grepl("Emotion", decade_2010s$Varname) ~ "FearOfCrime",
+                               grepl("qual", decade_2010s$Varname) ~ "FearOfCrime",
+                               grepl("insult", decade_2010s$Varname) ~ "FearOfCrime",
+                               grepl("vmworry", decade_2010s$Varname) ~ "FearOfCrime",
+                               grepl("incr", decade_2010s$Varname) ~ "LocalOrNationalCrimeIncrease",
+                               grepl("Local", decade_2010s$Varname) ~ "LocalOrNationalCrimeIncrease",
+                               grepl("Nat", decade_2010s$Varname) ~ "LocalOrNationalCrimeIncrease",
+                               grepl("burg", decade_2010s$Varname) ~ "Burglary",
+                               grepl("mug", decade_2010s$Varname) ~ "Mugging",
+                               grepl("teen", decade_2010s$Varname) ~ "TeenagersOnStreets",
+                               grepl("Juvenile", decade_2010s$Varname) ~ "TeenagersOnStreets",
+                               grepl("dark", decade_2010s$Varname) ~ "SafetyAtNight",
+                               grepl("night", ignore.case = TRUE, decade_2010s$Varname) ~ "SafetyAtNight",
+                               grepl("vand", decade_2010s$Varname) ~ "VandalismOrGraffiti",
+                               grepl("graff", decade_2010s$Varname) ~ "VandalismOrGraffiti",
+                               grepl("theft", decade_2010s$Varname) ~ "CarCrime",
+                               grepl("stolen", decade_2010s$Varname) ~ "CarCrime",
+                               grepl("molest", decade_2010s$Varname) ~ "RapeOrMolest",
+                               grepl("rape", decade_2010s$Varname) ~ "RapeOrMolest",
+                               grepl("race", decade_2010s$Varname) ~ "RaceAttacks"
+)
+
+#boxplots by theme for the 2010's
+ggplot(data = decade_2010s, 
+       aes(x = reorder(theme, Index, FUN = median),  y = Index)) +
+  geom_boxplot() +
+  labs (
+    x = "Theme"
+  ) +
+  theme(axis.text.x = element_text(size = 6)) 
+  
+
+#plot distribution of selected themes
+#a general feeling crime is rising rather than specific fears
+ggplot(data = decade_2010s %>% 
+         filter(theme %in% c("LocalOrNationalCrimeIncrease",
+                                                   "FearOfCrime",
+                                                   NA)),
+       aes(x= Index, colour = theme)) +
+  geom_density() +
+  xlim(0,1) +
+  theme_bw() +
+  labs (
+    title = "2010 concern by selected theme"
+  )
+
+#was it similar for 2020s?
+decade_2020s <- crime_concern %>% filter(decade == "2020")
+
+decade_2020s$theme <- case_when(grepl("Emotion", decade_2020s$Varname) ~ "FearOfCrime",
+                                grepl("qual", decade_2020s$Varname) ~ "FearOfCrime",
+                                grepl("insult", decade_2020s$Varname) ~ "FearOfCrime",
+                                grepl("vmworry", decade_2020s$Varname) ~ "FearOfCrime",
+                                grepl("incr", decade_2020s$Varname) ~ "LocalOrNationalCrimeIncrease",
+                                grepl("Local", decade_2020s$Varname) ~ "LocalOrNationalCrimeIncrease",
+                                grepl("Nat", decade_2020s$Varname) ~ "LocalOrNationalCrimeIncrease",
+                                grepl("burg", decade_2020s$Varname) ~ "Burglary",
+                                grepl("mug", decade_2020s$Varname) ~ "Mugging",
+                                grepl("teen", decade_2020s$Varname) ~ "TeenagersOnStreets",
+                                grepl("Juvenile", decade_2020s$Varname) ~ "TeenagersOnStreets",
+                                grepl("dark", decade_2020s$Varname) ~ "SafetyAtNight",
+                                grepl("night", ignore.case = TRUE, decade_2020s$Varname) ~ "SafetyAtNight",
+                                grepl("vand", decade_2020s$Varname) ~ "VandalismOrGraffiti",
+                                grepl("graff", decade_2020s$Varname) ~ "VandalismOrGraffiti",
+                                grepl("theft", decade_2020s$Varname) ~ "CarCrime",
+                                grepl("stolen", decade_2020s$Varname) ~ "CarCrime",
+                                grepl("molest", decade_2020s$Varname) ~ "RapeOrMolest",
+                                grepl("rape", decade_2020s$Varname) ~ "RapeOrMolest",
+                                grepl("race", decade_2020s$Varname) ~ "RaceAttacks"
+)
+
+#boxplots by theme for the 2020's
+#only general questions / safety walking during day/night
+ggplot(data = decade_2020s, 
+       aes(x = reorder(theme, Index, FUN = median),  y = Index)) +
+  geom_boxplot() +
+  labs (
+    x = "Theme"
+  ) +
+  theme(axis.text.x = element_text(size = 6)) 
+
