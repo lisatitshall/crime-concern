@@ -7,6 +7,7 @@ Explore the following dataset using R: [Attitude Towards Crime and Punishment in
 - Step 2: Summarize the dataset and see if there are any nulls
 - Step 3: Look at each variable individually to understand what it shows
 - Step 4: Look at how the index differs by variable
+- Step 5: Deep dive into any major differences between demographics or decades
 
 ## Initial Exploration
 - Varname is a combination of the poll type and question. It won't provide any different information but will be easier to filter on.
@@ -30,6 +31,19 @@ The boxplot below shows the distribution of index for each demographic. We can s
 The following density plot compares the index distribution for females and males.
 
 ![image](https://github.com/user-attachments/assets/5d455e92-5ba7-48ae-8e25-892f6748e6ba)
+
+To establish what was causing higher concern for females, an inner join was undertaken to compare female and male responses for the same poll, year and question. A few questions only posed to women were removed at this stage. The following scatter plot shows many instances where females were more concerned about the same issue than males (anything below the red line). 
+
+![image](https://github.com/user-attachments/assets/04f57f9d-f326-49c6-9145-bc3622c9b099)
+
+Grouping by theme showed which issues females are more concerned about (see scatter chart below). Note: only themes that appear in multiple polls have been included and careful work was done to ensure only matching questions were grouped together. 
+
+![image](https://github.com/user-attachments/assets/5da887e0-04a9-4121-9f14-c63edfe078fb)
+
+The following themes stand out as being of more concern to females: rape/molest, safety at night, mugging and fear of crime.
+
+
+
 
 ### [2] Crime concern has fallen over the decades
 The barplot below shows the average index per decade (note that the 1960's and 1970's have fewer data points). Crime concern has been decreasing except in the 2020's.
