@@ -419,3 +419,5 @@ ggplot(data = decade_2020s,
   ) +
   theme(axis.text.x = element_text(size = 6)) 
 
+
+decade_1990s <- crime_concern %>% filter(decade == "1990")
