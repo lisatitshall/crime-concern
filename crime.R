@@ -1,5 +1,6 @@
 #load required packages
 library(tidyverse)
+library(RColorBrewer)
 
 #read in crime concern data to explore
 crime_concern <- read_csv("data/CrimeConcern.csv")
@@ -154,4 +155,84 @@ poll_names <- crime_concern %>% group_by(Poll) %>%
 #Are there particular areas where females/non-whites are more concerned?
 #What are the outliers for index in the 2010s?
 #Why is the spread of data for 2020 wider? Specific crimes? Remember fewer data points..
+
+#look at female data to see if any areas are of more concern
+#firstly see whether females and males are asked the same questions
+#There are 6 questions that females have been asked more than men
+#Shouldn't be enough to change the distribution 
+#    but would be better to compare like for like
+(questions_by_gender <- crime_concern %>%
+    filter(Demographic %in% c("Female", "Male")) %>%
+    select(Varname, Demographic) %>%
+    droplevels() %>%
+    table())
+
+#create a new dataset where we match by varname and year and remove any
+# which don't have female and male response
+female <- filter(crime_concern,
+                 Demographic == "Female")
+
+male <- filter(crime_concern,
+               Demographic == "Male")
+
+gender <- inner_join(female, male %>% select(Varname, Date, Poll, Index), 
+                     by = c("Varname", "Date", "Poll"), 
+                     keep = FALSE) %>%
+  rename(female_index = Index.x, male_index = Index.y)
+  
+
+#plot with a straight line 
+plot(gender$female_index, gender$male_index,
+     xlab = "Female index", 
+     ylab = "Male index",
+     main = "Female / male comparison",
+     cex = .5,
+     pch = 16)
+abline(a=0, b=1, col = "red")
+
+#ideally we would combine themes across polls (only if v.clear they're the same)
+themes <- crime_concern %>% group_by(Varname, Question) %>% 
+  summarise(count = n())
+
+#add a column to gender for the most common themes
+gender$theme <- case_when(grepl("Emotion", gender$Varname) ~ "FearOfCrime",
+                          grepl("qual", gender$Varname) ~ "FearOfCrime",
+                          grepl("insult", gender$Varname) ~ "FearOfCrime",
+                          grepl("vmworry", gender$Varname) ~ "FearOfCrime",
+                          grepl("incr", gender$Varname) ~ "LocalOrNationalCrimeIncrease",
+                          grepl("Local", gender$Varname) ~ "LocalOrNationalCrimeIncrease",
+                          grepl("Nat", gender$Varname) ~ "LocalOrNationalCrimeIncrease",
+                          grepl("burg", gender$Varname) ~ "Burglary",
+                          grepl("mug", gender$Varname) ~ "Mugging",
+                          grepl("teen", gender$Varname) ~ "TeenagersOnStreets",
+                          grepl("Juvenile", gender$Varname) ~ "TeenagersOnStreets",
+                          grepl("dark", gender$Varname) ~ "SafetyAtNight",
+                          grepl("night", ignore.case = TRUE, gender$Varname) ~ "SafetyAtNight",
+                          grepl("vand", gender$Varname) ~ "VandalismOrGraffiti",
+                          grepl("graff", gender$Varname) ~ "VandalismOrGraffiti",
+                          grepl("theft", gender$Varname) ~ "CarCrime",
+                          grepl("stolen", gender$Varname) ~ "CarCrime",
+                          grepl("molest", gender$Varname) ~ "RapeOrMolest",
+                          grepl("rape", gender$Varname) ~ "RapeOrMolest"
+                          )
+
+#double check the results are as expected, yes
+View(test_themes <- gender %>% 
+    group_by(theme, Varname) %>% summarise(count = n()))
+
+gender$theme <- factor(gender$theme)
+
+#plot female/male again but by theme
+ggplot(gender %>% filter(!is.na(theme)), 
+       aes(female_index, male_index, col = theme )) +
+  geom_point() +
+  scale_color_brewer(palette = "Paired") +
+  geom_abline(intercept = 0, slope = 1, linewidth = 1) +
+  theme_bw() + 
+  labs(
+    x = "Female index", 
+    y = "Male index", 
+    title = "Female / male comparison"
+  )
+
 
