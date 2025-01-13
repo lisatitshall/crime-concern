@@ -37,10 +37,10 @@ summary(crime_concern %>% select(!Question))
 
 #look at each variable (except first id column)
 #68 values for Varname column based on poll/specific question
-#8 is lowest count, no anomalies identified
+#8 is lowest count
 varnames <- crime_concern %>% group_by(Varname) %>% tally(sort=TRUE)
 
-#Look at years, lowest count is 2
+#Look at years, 1965-2023, lowest count is 2
 #from 1988 onwards everything is in January
 years <- crime_concern %>% group_by(year(Date), month(Date)) %>% 
   tally(sort = TRUE)
@@ -57,6 +57,9 @@ ggplot(data = crime_concern, aes(Index)) +
                        sd = sd(crime_concern$Index)), 
                 colour = "red") +
   theme_bw()
+
+mean(crime_concern$Index)
+median(crime_concern$Index)
 
 #already seen 7 types of poll
 #BES Cross Sections and Internet Panel don't have much data
@@ -86,6 +89,28 @@ boxplot(Index ~ Poll, data = crime_concern, cex.axis = 0.5)
 #might have expected older people to be higher
 boxplot(Index ~ Demographic, data = crime_concern, cex.axis = 0.5)
 
+#visualize male/female alone
+ggplot(data = crime_concern %>% filter(Demographic %in% c("Female", "Male")),
+       aes(x= Index, colour = Demographic)) +
+  geom_density() +
+  xlim(0,1) +
+  theme_bw()
+
+#visualize white/non-white alone
+ggplot(data = crime_concern %>% filter(Demographic %in% c("Non-white", "White")),
+       aes(x= Index, colour = Demographic)) +
+  geom_density() +
+  xlim(0,1) +
+  theme_bw()
+
+#visualize ages
+ggplot(data = crime_concern %>% 
+         filter(Demographic %in% c("16-24", "25-49", "50-64", "65+")),
+       aes(x= Index, colour = Demographic)) +
+  geom_density() +
+  xlim(0,1) +
+  theme_bw()
+
 #how does index differ by year
 #add decade column, bit arbitrary but gives general idea
 crime_concern <- crime_concern %>%
@@ -93,17 +118,26 @@ crime_concern <- crime_concern %>%
 
 #group by decade and check year to see if results are correct, yes
 decade <- crime_concern %>% group_by(decade) %>%
-  summarise(count = n(), mean = mean(Index)) %>%
-  mutate(change = mean - lag(mean))
+  summarise(data_points = n(), mean_index = round(mean(Index),2)) %>%
+  mutate(change_from_previous_decade = mean_index - lag(mean_index))
 
-#how does index differ by decade
+#show how mean index changes over the decades
+barplot(decade$mean_index, 
+        names.arg = decade$decade,
+        xlab = "Decade",
+        ylab = "Mean index",
+        main = "Changing attitudes to crime concern")
+
+#how does the shape of index differ by decade
 #generally decreasing except in 2020s, interesting (fewer data points in 2020s)
 boxplot(Index ~ decade, 
-        data = crime_concern)
+        data = crime_concern,
+        xlab = "Decade", 
+        main = "Changing attitudes to crime concern")
 
 #which poll covers widest date range?
 #Gallup is older data from 60's to 80's, recall index was higher here 
-#and index higher in the earlier decades
+#  and index higher in the earlier decades
 #BCS / CSEW has biggest range and lots of data
 poll_names <- crime_concern %>% group_by(Poll) %>% 
   summarise(surveys = n(), 
@@ -116,4 +150,8 @@ poll_names <- crime_concern %>% group_by(Poll) %>%
 (poll_demographics <- crime_concern %>% group_by(Poll) %>% 
   select(Poll, Demographic) %>% table())
 
+#Ideas:
+#Are there particular areas where females/non-whites are more concerned?
+#What are the outliers for index in the 2010s?
+#Why is the spread of data for 2020 wider? Specific crimes? Remember fewer data points..
 
