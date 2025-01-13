@@ -167,7 +167,7 @@ poll_names <- crime_concern %>% group_by(Poll) %>%
     droplevels() %>%
     table())
 
-#create a new dataset where we match by varname and year and remove any
+#create a new dataset where we match by varname, year and poll and remove any
 # which don't have female and male response
 female <- filter(crime_concern,
                  Demographic == "Female")
@@ -181,7 +181,7 @@ gender <- inner_join(female, male %>% select(Varname, Date, Poll, Index),
   rename(female_index = Index.x, male_index = Index.y)
   
 
-#plot with a straight line 
+#plot female vs male with a straight line 
 plot(gender$female_index, gender$male_index,
      xlab = "Female index", 
      ylab = "Male index",
@@ -190,11 +190,12 @@ plot(gender$female_index, gender$male_index,
      pch = 16)
 abline(a=0, b=1, col = "red")
 
-#ideally we would combine themes across polls (only if v.clear they're the same)
+#ideally we would combine themes across polls (only if clear they're the same)
 themes <- crime_concern %>% group_by(Varname, Question) %>% 
   summarise(count = n())
 
 #add a column to gender for the most common themes
+#probably an easier way to do this!
 gender$theme <- case_when(grepl("Emotion", gender$Varname) ~ "FearOfCrime",
                           grepl("qual", gender$Varname) ~ "FearOfCrime",
                           grepl("insult", gender$Varname) ~ "FearOfCrime",
@@ -216,10 +217,14 @@ gender$theme <- case_when(grepl("Emotion", gender$Varname) ~ "FearOfCrime",
                           grepl("rape", gender$Varname) ~ "RapeOrMolest"
                           )
 
-#double check the results are as expected, yes
+#double check the results are as expected
+#one question was removed because it was about whether rape is 
+# a social issue rather than whether people are personally worried about rape
+#all else as expected
 View(test_themes <- gender %>% 
     group_by(theme, Varname) %>% summarise(count = n()))
 
+#change theme to factor for plotting
 gender$theme <- factor(gender$theme)
 
 #plot female/male again but by theme
@@ -234,5 +239,98 @@ ggplot(gender %>% filter(!is.na(theme)),
     y = "Male index", 
     title = "Female / male comparison"
   )
+
+
+#now investigate where white/non-white concerns differ
+white <- filter(crime_concern,
+                 Demographic == "White")
+
+non_white <- filter(crime_concern,
+               Demographic == "Non-white")
+
+ethnicity <- inner_join(white, non_white %>% select(Varname, Date, Poll, Index), 
+                     by = c("Varname", "Date", "Poll"), 
+                     keep = FALSE) %>%
+  rename(white_index = Index.x, non_white_index = Index.y)
+
+#plot white vs non-white with a straight line 
+plot(ethnicity$white_index, ethnicity$non_white_index,
+     xlab = "White index", 
+     ylab = "Non white index",
+     main = "White / non-white comparison",
+     cex = .5,
+     pch = 16)
+abline(a=0, b=1, col = "red")
+
+
+
+#plot white vs non-white again with decade as colour
+ethnicity$decade <- factor(ethnicity$decade)
+
+#no clear trend
+ggplot(ethnicity, aes(white_index, non_white_index, col = decade )) +
+  geom_point() +
+  scale_color_brewer(palette = "Paired") +
+  geom_abline(intercept = 0, slope = 1, linewidth = 1) +
+  theme_bw() + 
+  labs(
+    x = "White index", 
+    y = "Non-white index", 
+    title = "White / non-white comparison"
+  )
+
+#try same themes we looked at for gender
+ethnicity$theme <- case_when(grepl("Emotion", ethnicity$Varname) ~ "FearOfCrime",
+                          grepl("qual", ethnicity$Varname) ~ "FearOfCrime",
+                          grepl("insult", ethnicity$Varname) ~ "FearOfCrime",
+                          grepl("vmworry", ethnicity$Varname) ~ "FearOfCrime",
+                          grepl("incr", ethnicity$Varname) ~ "LocalOrNationalCrimeIncrease",
+                          grepl("Local", ethnicity$Varname) ~ "LocalOrNationalCrimeIncrease",
+                          grepl("Nat", ethnicity$Varname) ~ "LocalOrNationalCrimeIncrease",
+                          grepl("burg", ethnicity$Varname) ~ "Burglary",
+                          grepl("mug", ethnicity$Varname) ~ "Mugging",
+                          grepl("teen", ethnicity$Varname) ~ "TeenagersOnStreets",
+                          grepl("Juvenile", ethnicity$Varname) ~ "TeenagersOnStreets",
+                          grepl("dark", ethnicity$Varname) ~ "SafetyAtNight",
+                          grepl("night", ignore.case = TRUE, ethnicity$Varname) ~ "SafetyAtNight",
+                          grepl("vand", ethnicity$Varname) ~ "VandalismOrGraffiti",
+                          grepl("graff", ethnicity$Varname) ~ "VandalismOrGraffiti",
+                          grepl("theft", ethnicity$Varname) ~ "CarCrime",
+                          grepl("stolen", ethnicity$Varname) ~ "CarCrime",
+                          grepl("molest", ethnicity$Varname) ~ "RapeOrMolest",
+                          grepl("rape", ethnicity$Varname) ~ "RapeOrMolest",
+                          grepl("race", ethnicity$Varname) ~ "RaceAttacks"
+)
+
+View(test_themes_2 <- ethnicity %>% 
+       group_by(theme, Varname) %>% summarise(count = n()))
+
+#try plotting by theme
+#race attacks is only very clear trend
+ggplot(ethnicity %>% filter(!is.na(theme)), 
+       aes(white_index, non_white_index, col = theme )) +
+  geom_point() +
+  scale_color_brewer(palette = "Paired") +
+  geom_abline(intercept = 0, slope = 1, linewidth = 1) +
+  theme_bw() + 
+  labs(
+    x = "White index", 
+    y = "Non-white index", 
+    title = "White / non-white comparison"
+  )
+
+#plot worry about race attacks over time
+ggplot(ethnicity %>% filter(Varname == "CSEW_worryraceattacks")) +
+  geom_segment(aes(x=year(Date), xend=year(Date), y=non_white_index, yend=white_index), color="grey") +
+  geom_point( aes(x=year(Date), y=non_white_index), col = "blue") +
+  geom_point( aes(x=year(Date), y=white_index), col = "orange" ) +
+  coord_flip() +
+  scale_x_reverse() +
+  labs (
+    x = "Year",
+    y = "Index",
+    title = "Race Attack Worry 1994-2019"
+  ) +
+  theme_bw() 
 
 
