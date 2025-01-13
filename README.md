@@ -50,11 +50,11 @@ One theory was the higher concern could have been in earlier decades. A scatterp
 
 ![image](https://github.com/user-attachments/assets/41042a4d-22f4-403a-a33e-f56686f86007)
 
-Grouping by themes showed one clear issue that non-whites are more concerned about but otherwise the trends were not as clear as the female / male split. 
+Grouping by themes showed one clear issue that non-white people are more concerned about (race attacks) but otherwise the trends were not as clear as the female / male split. 
 
 ![image](https://github.com/user-attachments/assets/972f2683-b6db-405c-be4e-e945f3ed06f0)
 
-Finally, a lollipop chart shows how worry about race attacks has decreased between 1994 and 2019. However, a large gap remains between whites (orange dots) and non-whites (blue dots). 
+Finally, a lollipop chart shows how worry about race attacks has decreased between 1994 and 2019. However, a large gap remains between white people (orange dots) and non-white people (blue dots). 
 
 ![image](https://github.com/user-attachments/assets/92c7d4f4-80fc-4a64-b51a-8e0d4dcf87f3)
 
@@ -67,11 +67,20 @@ Plotting the index distribution by decade reveals outliers for the 2010's and a 
 
 ![image](https://github.com/user-attachments/assets/b59f911b-a889-48c4-b4b8-d26a87a5b6ef)
 
+Using the same themes as above the boxplots below shows the level of concern by theme in the 2010's (outliers are above 0.7).
 
+![image](https://github.com/user-attachments/assets/4865cfcd-fc7b-41a7-a5d7-6b3c46ff1da3)
 
+The boxplots suggest that the overall crime concern was high but concern for specific crimes weren't. For example, the only outliers were in the following themes: Local or National Crime Increase, Fear of Crime and NA. On inspection the NA data points were questioning whether it was less safe for children to play outside than 10 years ago. The density chart below plots the distributions for these categories.
 
+![image](https://github.com/user-attachments/assets/7c35fc2a-73bb-44f5-9fdf-49f3f84c8b36)
 
+When the same analysis was repeated for the 2020's it became clear that only broader questions about overall crime concern were asked. The exception was whether people felt safe walking during the day and night. This could help explain why the overall crime concern seemed higher for the 2020's. An alternative theory could have been new categories of crime e.g. cyber crime.
 
+It's possible this trend holds across the decades i.e. people feel crime is getting worse but aren't personally concerned about anything in particular. Revisiting the boxplots we can see that each decade has values close to 1 but in earlier decades they're not shown as outliers because concern for specific crimes was higher. 
 
+![image](https://github.com/user-attachments/assets/b59f911b-a889-48c4-b4b8-d26a87a5b6ef)
+
+It would also be interesting to see what crime data the Office for National Statistics provide and whether it could be compared to the survey data. In general, I suspect crime has decreased over the decades but it would be interesting to see if there are exceptions and how that fits it with this survey data.
 
 
