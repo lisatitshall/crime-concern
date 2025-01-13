@@ -42,8 +42,21 @@ Grouping by theme showed which issues females are more concerned about (see scat
 
 The following themes stand out as being of more concern to females: rape/molest, safety at night, mugging and fear of crime.
 
+A similar analysis was undertaken for ethnicity. The following scatter plot shows that non-white people were often more concerned about the same issue than white people (anything above the red line). 
 
+![image](https://github.com/user-attachments/assets/de31f389-5038-4487-8891-30942fe270b1)
 
+One theory was the higher concern could have been in earlier decades. A scatterplot including decade showed no clear trend. 
+
+![image](https://github.com/user-attachments/assets/41042a4d-22f4-403a-a33e-f56686f86007)
+
+Grouping by themes showed one clear issue that non-whites are more concerned about but otherwise the trends were not as clear as the female / male split. 
+
+![image](https://github.com/user-attachments/assets/972f2683-b6db-405c-be4e-e945f3ed06f0)
+
+Finally, a lollipop chart shows how worry about race attacks has decreased between 1994 and 2019. However, a large gap remains between whites (orange dots) and non-whites (blue dots). 
+
+![image](https://github.com/user-attachments/assets/92c7d4f4-80fc-4a64-b51a-8e0d4dcf87f3)
 
 ### [2] Crime concern has fallen over the decades
 The barplot below shows the average index per decade (note that the 1960's and 1970's have fewer data points). Crime concern has been decreasing except in the 2020's.
