@@ -54,7 +54,8 @@ Plotting the index distribution by decade reveals outliers for the 2010's and a 
 
 Using the same themes as above the boxplots below shows the level of concern by theme in the 2010's (outliers are above 0.7).
 
-![image](https://github.com/user-attachments/assets/4865cfcd-fc7b-41a7-a5d7-6b3c46ff1da3)
+![image](https://github.com/user-attachments/assets/1b6a248a-75f7-44a8-9ebd-e25869e2b392)
+
 
 The boxplots suggest that the overall crime concern was high but concern for specific crimes weren't. For example, the only outliers were in the following themes: Local or National Crime Increase, Fear of Crime and NA. On inspection the NA data points were questioning whether it was less safe for children to play outside than 10 years ago. The density chart below plots the distributions for these categories.
 
