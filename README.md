@@ -4,23 +4,8 @@ Explore the following dataset using R: [Attitude Towards Crime and Punishment in
 ### Steps taken
 
 - Step 1: Import data from csv and explore datatypes
-- Step 2: Summarize the dataset and see if there are any nulls
-- Step 3: Look at each variable individually to understand what it shows
-- Step 4: Look at how the index differs by variable
-- Step 5: Deep dive into any major differences between demographics or decades
-
-## Initial Exploration
-- Varname is a combination of the poll type and question. It won't provide any different information but will be easier to filter on.
-- Years shows when the surveys were performed. Some years have less data than others e.g. 1965 has 4 data points.
-- The demographics are a mix of ages, genders and ethnicities. The total for each demographic differs.
-- The index is positively skewed with median 0.34 and mean 0.37 (see image below, the red line is what the normal distribution looks like).
-
-![image](https://github.com/user-attachments/assets/a5e5bfaf-f40f-4452-b439-7e1078cac35f)
-
-- There are differing scales of survey size from double digits to 100k (see boxplot below).
-![image](https://github.com/user-attachments/assets/e3488eb5-8699-49a3-919e-cdd0eaaf7e78)
-
-- Some questions have few data points. This could be because they weren't asked on multiple years or don't include all demographics.
+- Step 2: Explore data [(see Data Notes)](#data-notes)  
+- Step 3: Deep dive into any major differences between demographics or decades
 
 ## Findings
 ### [1] Crime concern differs by demographic
@@ -77,10 +62,19 @@ The boxplots suggest that the overall crime concern was high but concern for spe
 
 When the same analysis was repeated for the 2020's it became clear that only broader questions about overall crime concern were asked. The exception was whether people felt safe walking during the day and night. This could help explain why the overall crime concern seemed higher for the 2020's. An alternative theory could have been new categories of crime e.g. cyber crime.
 
-It's possible this trend holds across the decades i.e. people feel crime is getting worse but aren't personally concerned about anything in particular. Revisiting the boxplots we can see that each decade has values close to 1 but in earlier decades they're not shown as outliers because concern for specific crimes was higher. 
-
-![image](https://github.com/user-attachments/assets/b59f911b-a889-48c4-b4b8-d26a87a5b6ef)
+It's possible this trend holds across the decades i.e. people feel crime is getting worse but aren't personally concerned about anything in particular. Revisiting the boxplots we can see that each decade has values close to 1 but in earlier decades they're not shown as outliers because concern for specific crimes was higher.  
 
 It would also be interesting to see what crime data the Office for National Statistics provide and whether it could be compared to the survey data. In general, I suspect crime has decreased over the decades but it would be interesting to see if there are exceptions and how that fits it with this survey data.
 
+## Data Notes
+- Varname is a combination of the poll type and question.
+- Years shows when the surveys were performed. Some years have less data than others e.g. 1965 has 4 data points.
+- The demographics are a mix of ages, genders and ethnicities. The total for each demographic differs.
+- The index is positively skewed with median 0.34 and mean 0.37 (see image below, the red line is what the normal distribution looks like).
 
+![image](https://github.com/user-attachments/assets/a5e5bfaf-f40f-4452-b439-7e1078cac35f)
+
+- There are differing scales of survey size from double digits to 100k (see boxplot below).
+![image](https://github.com/user-attachments/assets/e3488eb5-8699-49a3-919e-cdd0eaaf7e78)
+
+- Some questions have few data points. This could be because they weren't asked on multiple years or don't include all demographics.
