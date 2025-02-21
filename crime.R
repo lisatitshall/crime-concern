@@ -365,9 +365,10 @@ ggplot(data = decade_2010s,
        aes(x = reorder(theme, Index, FUN = median),  y = Index)) +
   geom_boxplot() +
   labs (
-    x = "Theme"
+    x = NULL
   ) +
-  theme(axis.text.x = element_text(size = 6)) 
+  theme(axis.text.x = element_text(size = 6),
+        panel.background = NULL) 
   
 
 #plot distribution of selected themes
